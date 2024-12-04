@@ -18,7 +18,7 @@ class Carro(BaseModel):
     cor: str
     modelo: str
     ano: int
-    marca:  str
+    marca: str
 
 
 @asynccontextmanager
@@ -37,32 +37,41 @@ async def lifespan(app: FastAPI):
 
     yield
 
-    #Quando desligado
-    try:
-        with open(CSV_FILE_PATH, mode='a', newline='', encoding='utf-8') as file:
-            fieldnames = ['placa','cor','modelo','ano','marca']
-            writer = csv.DictWriter(file, fieldnames=fieldnames)
-            writer.writeheader()
+    # Opcional: Se você quiser salvar os dados no CSV ao desligar o servidor
+    # Pode descomentar o código abaixo se necessário
 
-            for carro in dados:
-                writer.writerows(carro)
-    except Exception as e:
-        logging.error(f"Erro ao gravar no arquivo CSV: {e}")
-    #Gravar informações de dados no csv
+    # try:
+    #     with open(CSV_FILE_PATH, mode='w', newline='', encoding='utf-8') as file:
+    #         fieldnames = ['placa', 'cor', 'modelo', 'ano', 'marca']
+    #         writer = csv.DictWriter(file, fieldnames=fieldnames)
+    #         writer.writeheader()
+    #         writer.writerows(dados)
+    # except Exception as e:
+    #     logging.error(f"Erro ao gravar no arquivo CSV: {e}")
 
-
-
-'''
-# Funcionalidade 1 - Adicionar uma unidade
-Objetivo: Implementar um endpoint para cadastrar uma nova entidade no sistema.
-Detalhes: Quando o endpoint for acessado com um JSON contendo os dados da entidade, a API deverá adicionar essa entidade ao arquivo CSV, usando o modo de "append" (ou seja, adicionando ao final do arquivo sem substituir os dados existentes).
-Exemplo: Enviar um JSON com os dados de um novo Produto e salvar esses dados no CSV, cada linha representando um produto diferente.
-'''
 @app.post("/adicionar/", response_model=Carro, status_code=HTTPStatus.CREATED)
-def adicionar_carro(carro:Carro):
-    if any(c.placa == carro.placa for c in dados):
+def adicionar_carro(carro: Carro):
+    # Verificar se o carro já existe
+    if any(c['placa'] == carro.placa for c in dados):
         raise HTTPException(status_code=HTTPStatus.BAD_REQUEST, detail="Carro já existe.")
     
-    dados.append(carro.model_dump())
+    # Adicionar carro na lista de dados
+    dados.append(carro.dict())
+
+    # Escrever o novo carro no CSV imediatamente
+    try:
+        file_exists = os.path.exists(CSV_FILE_PATH)
+        with open(CSV_FILE_PATH, mode='a', newline='', encoding='utf-8') as file:
+            fieldnames = ['placa', 'cor', 'modelo', 'ano', 'marca']
+            writer = csv.DictWriter(file, fieldnames=fieldnames)
+
+            # Escrever cabeçalho se o arquivo não existir ou estiver vazio
+            if not file_exists or os.stat(CSV_FILE_PATH).st_size == 0:
+                writer.writeheader()
+
+            # Escrever o novo carro no CSV
+            writer.writerow(carro.dict())
+    except Exception as e:
+        logging.error(f"Erro ao gravar no arquivo CSV: {e}")
 
     return carro
