@@ -1,0 +1,11 @@
+2024-12-04 16:36:06,812 - INFO - Arquivo CSV carregado com sucesso.
+2024-12-04 16:36:17,750 - INFO - Solicitação para listar todos os carros.
+2024-12-04 16:36:32,405 - INFO - Solicitação para listar todos os carros.
+2024-12-04 16:37:08,139 - INFO - Tentativa de atualizar carro com placa: 12weqdsa
+2024-12-04 16:37:08,141 - WARNING - A placa no corpo da requisição não corresponde à placa na rota.
+2024-12-04 16:37:19,037 - INFO - Tentativa de atualizar carro com placa: 12weqdsa
+2024-12-04 16:37:19,052 - INFO - Carro com placa 12weqdsa atualizado com sucesso.
+2024-12-04 16:37:39,461 - INFO - Tentativa de apagar carro com placa: 12weqdsa
+2024-12-04 16:37:39,464 - INFO - Carro com placa 12weqdsa removido com sucesso.
+2024-12-04 16:37:41,951 - INFO - Tentativa de apagar carro com placa: 12weqdsa
+2024-12-04 16:37:41,952 - WARNING - Carro com placa 12weqdsa não encontrado para exclusão.
