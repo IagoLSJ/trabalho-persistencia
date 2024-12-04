@@ -97,3 +97,38 @@ def apagar_carro(placa: str):
         raise HTTPException(status_code=HTTPStatus.INTERNAL_SERVER_ERROR, detail="Erro ao salvar os dados.")
 
     return carro_removido
+
+@app.put("/atualizar/{placa}", response_model=Carro, status_code=HTTPStatus.OK)
+def atualizar_carro(placa: str, carroAtualizado: Carro):
+    global dados
+
+    # Verificar se a placa existe no DataFrame
+    index_placa_igual = dados[dados['placa'] == placa].index
+
+    if index_placa_igual.empty:
+        raise HTTPException(status_code=HTTPStatus.NOT_FOUND, detail="Carro não encontrado.")
+
+    # Garantir que a placa no corpo da requisição seja a mesma da rota
+    if carroAtualizado.placa != placa:
+        raise HTTPException(
+            status_code=HTTPStatus.BAD_REQUEST,
+            detail="A placa na requisição não pode ser diferente da placa na rota."
+        )
+    
+    # Atualizar as colunas específicas, mantendo a placa inalterada
+    index = index_placa_igual[0]
+    dados.loc[index, ['cor', 'modelo', 'ano', 'marca']] = [
+        carroAtualizado.cor,
+        carroAtualizado.modelo,
+        carroAtualizado.ano,
+        carroAtualizado.marca
+    ]
+
+    # Salvar as alterações no CSV
+    try:
+        dados.to_csv(CSV_FILE_PATH, index=False)
+    except Exception as e:
+        logging.error(f"Erro ao salvar o arquivo CSV: {e}")
+        raise HTTPException(status_code=HTTPStatus.INTERNAL_SERVER_ERROR, detail="Erro ao salvar os dados.")
+
+    return carroAtualizado
