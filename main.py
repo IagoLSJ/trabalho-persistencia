@@ -146,4 +146,5 @@ def quantidade_carros():
     resposta = {
         "quantidade" : dados.shape[0]
     }
+    logging.info(f"Quantidade de carros: {resposta}")
     return resposta
