@@ -28,7 +28,7 @@ class Carro(BaseModel):
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
-    global dados
+    global dados 
     try:
         if os.path.exists(CSV_FILE_PATH):
             dados = pd.read_csv(CSV_FILE_PATH)
@@ -54,6 +54,7 @@ app = FastAPI(lifespan=lifespan)
 @app.post("/adicionar/", response_model=Carro, status_code=HTTPStatus.CREATED)
 def adicionar_carro(carro: Carro):
     global dados
+    dados = pd.read_csv(CSV_FILE_PATH)
     if (dados['placa'] == carro.placa).any():
         logging.warning(f"Carro com placa {carro.placa} já existe.")
         raise HTTPException(status_code=HTTPStatus.BAD_REQUEST, detail="Carro já existe.")
@@ -133,3 +134,16 @@ def atualizar_carro(placa: str, carroAtualizado: Carro):
         raise HTTPException(status_code=HTTPStatus.INTERNAL_SERVER_ERROR, detail="Erro ao salvar os dados.")
 
     return carroAtualizado
+
+
+@app.get("/quantidade/", status_code=HTTPStatus.OK)
+def quantidade_carros():
+    
+    dados = pd.read_csv(CSV_FILE_PATH)
+    
+    logging.info("Solicitação para saber a quantidade de carros.")
+    
+    resposta = {
+        "quantidade" : dados.shape[0]
+    }
+    return resposta

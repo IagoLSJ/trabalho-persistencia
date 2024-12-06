@@ -9,3 +9,42 @@
 2024-12-04 16:37:39,464 - INFO - Carro com placa 12weqdsa removido com sucesso.
 2024-12-04 16:37:41,951 - INFO - Tentativa de apagar carro com placa: 12weqdsa
 2024-12-04 16:37:41,952 - WARNING - Carro com placa 12weqdsa não encontrado para exclusão.
+2024-12-06 08:36:39,263 - INFO - Arquivo CSV carregado com sucesso.
+2024-12-06 08:36:54,995 - INFO - Solicitação para saber a quantidade de carros.
+2024-12-06 08:38:10,481 - INFO - Solicitação para listar todos os carros.
+2024-12-06 08:42:06,834 - INFO - Carro com placa ABC1234 adicionado com sucesso.
+2024-12-06 08:42:32,465 - INFO - Carro com placa XYZ5678 adicionado com sucesso.
+2024-12-06 08:42:44,511 - INFO - Carro com placa DEF9101 adicionado com sucesso.
+2024-12-06 08:42:58,784 - INFO - Carro com placa GHI2345 adicionado com sucesso.
+2024-12-06 08:43:14,397 - INFO - Carro com placa JKL6789 adicionado com sucesso.
+2024-12-06 08:43:25,928 - INFO - Carro com placa MNO3456 adicionado com sucesso.
+2024-12-06 08:43:38,213 - INFO - Carro com placa PQR7890 adicionado com sucesso.
+2024-12-06 08:43:53,801 - INFO - Carro com placa STU4567 adicionado com sucesso.
+2024-12-06 08:44:06,495 - INFO - Carro com placa VWX1234 adicionado com sucesso.
+2024-12-06 08:44:12,915 - INFO - Carro com placa YZA5678 adicionado com sucesso.
+2024-12-06 08:44:40,459 - INFO - Solicitação para saber a quantidade de carros.
+2024-12-06 08:46:22,513 - INFO - Dados salvos no CSV ao desligar o servidor.
+2024-12-06 08:46:25,654 - INFO - Arquivo CSV carregado com sucesso.
+2024-12-06 08:46:28,651 - INFO - Solicitação para saber a quantidade de carros.
+2024-12-06 08:46:30,697 - INFO - Solicitação para saber a quantidade de carros.
+2024-12-06 08:47:33,694 - INFO - Dados salvos no CSV ao desligar o servidor.
+2024-12-06 08:47:35,695 - INFO - Arquivo CSV carregado com sucesso.
+2024-12-06 08:47:39,647 - INFO - Solicitação para saber a quantidade de carros.
+2024-12-06 08:47:48,687 - INFO - Dados salvos no CSV ao desligar o servidor.
+2024-12-06 08:50:50,728 - INFO - Arquivo CSV carregado com sucesso.
+2024-12-06 08:50:54,772 - INFO - Solicitação para saber a quantidade de carros.
+2024-12-06 08:51:48,308 - INFO - Dados salvos no CSV ao desligar o servidor.
+2024-12-06 08:51:50,837 - INFO - Arquivo CSV carregado com sucesso.
+2024-12-06 08:51:54,131 - INFO - Solicitação para saber a quantidade de carros.
+2024-12-06 08:52:30,808 - INFO - Dados salvos no CSV ao desligar o servidor.
+2024-12-06 08:52:33,609 - INFO - Arquivo CSV carregado com sucesso.
+2024-12-06 08:52:36,354 - INFO - Solicitação para saber a quantidade de carros.
+2024-12-06 08:53:04,470 - INFO - Dados salvos no CSV ao desligar o servidor.
+2024-12-06 08:53:07,320 - INFO - Arquivo CSV carregado com sucesso.
+2024-12-06 08:53:10,154 - INFO - Solicitação para saber a quantidade de carros.
+2024-12-06 08:54:05,479 - INFO - Dados salvos no CSV ao desligar o servidor.
+2024-12-06 08:54:08,153 - INFO - Arquivo CSV carregado com sucesso.
+2024-12-06 08:54:11,699 - INFO - Solicitação para saber a quantidade de carros.
+2024-12-06 08:55:21,277 - INFO - Dados salvos no CSV ao desligar o servidor.
+2024-12-06 08:55:24,171 - INFO - Arquivo CSV carregado com sucesso.
+2024-12-06 08:55:26,345 - INFO - Solicitação para saber a quantidade de carros.
