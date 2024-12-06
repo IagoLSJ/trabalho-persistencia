@@ -28,24 +28,17 @@ class Carro(BaseModel):
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
-    global dados 
     try:
-        if os.path.exists(CSV_FILE_PATH):
-            dados = pd.read_csv(CSV_FILE_PATH)
-            logging.info("Arquivo CSV carregado com sucesso.")
-        else:
+        if not os.path.exists(CSV_FILE_PATH):
             dados = pd.DataFrame(columns=["placa", "cor", "modelo", "ano", "marca"])
-            logging.info("Arquivo CSV não encontrado. Um novo será criado ao adicionar o primeiro carro.")
+            dados.to_csv(CSV_FILE_PATH, index=False)
+            logging.info("Arquivo CSV não encontrado. Um novo foi criado.")
+        else:
+            logging.info("Arquivo CSV encontrado com sucesso.")
+        yield
     except Exception as e:
-        logging.error(f"Erro ao carregar o arquivo CSV: {e}")
-        dados = pd.DataFrame(columns=["placa", "cor", "modelo", "ano", "marca"])
-    yield
-
-    try:
-        dados.to_csv(CSV_FILE_PATH, index=False)
-        logging.info("Dados salvos no CSV ao desligar o servidor.")
-    except Exception as e:
-        logging.error(f"Erro ao salvar o arquivo CSV ao desligar o servidor: {e}")
+        logging.error(f"Erro ao configurar o arquivo CSV: {e}")
+        raise
 
 
 app = FastAPI(lifespan=lifespan)
@@ -53,7 +46,6 @@ app = FastAPI(lifespan=lifespan)
 
 @app.post("/adicionar/", response_model=Carro, status_code=HTTPStatus.CREATED)
 def adicionar_carro(carro: Carro):
-    global dados
     dados = pd.read_csv(CSV_FILE_PATH)
     if (dados['placa'] == carro.placa).any():
         logging.warning(f"Carro com placa {carro.placa} já existe.")
@@ -74,13 +66,27 @@ def adicionar_carro(carro: Carro):
 
 @app.get("/listar/", response_model=List[Carro], status_code=HTTPStatus.OK)
 def retornar_carros():
+    dados = pd.read_csv(CSV_FILE_PATH)
     logging.info("Solicitação para listar todos os carros.")
     return dados.to_dict(orient="records")
 
+@app.get("/listar/{placa}", response_model=Carro, status_code=HTTPStatus.OK)
+def retornar_carro(placa: str):
+    logging.info(f"Solicitação para verificar carro com placa: {placa}")
+
+    dados = pd.read_csv(CSV_FILE_PATH)
+
+    carro = dados[dados['placa'] == placa]
+
+    if carro.empty:
+        logging.warning(f"Carro com placa {placa} não encontrado para verificação.")
+        raise HTTPException(status_code=HTTPStatus.NOT_FOUND, detail="Carro não encontrado.")
+
+    return carro.iloc[0].to_dict()
 
 @app.delete("/apagar/{placa}", response_model=Carro, status_code=HTTPStatus.OK)
 def apagar_carro(placa: str):
-    global dados
+    dados = pd.read_csv(CSV_FILE_PATH)
     index_placa_igual = dados[dados['placa'] == placa].index
 
     if index_placa_igual.empty:
@@ -103,7 +109,7 @@ def apagar_carro(placa: str):
 
 @app.put("/atualizar/{placa}", response_model=Carro, status_code=HTTPStatus.OK)
 def atualizar_carro(placa: str, carroAtualizado: Carro):
-    global dados
+    dados = pd.read_csv(CSV_FILE_PATH)
 
     index_placa_igual = dados[dados['placa'] == placa].index
 
@@ -146,5 +152,6 @@ def quantidade_carros():
     resposta = {
         "quantidade" : dados.shape[0]
     }
+
     logging.info(f"Quantidade de carros: {resposta}")
     return resposta
