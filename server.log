@@ -48,3 +48,15 @@
 2024-12-06 08:55:21,277 - INFO - Dados salvos no CSV ao desligar o servidor.
 2024-12-06 08:55:24,171 - INFO - Arquivo CSV carregado com sucesso.
 2024-12-06 08:55:26,345 - INFO - Solicitação para saber a quantidade de carros.
+2024-12-12 08:47:52,482 - INFO - Arquivo CSV encontrado com sucesso.
+2024-12-12 08:48:10,855 - INFO - Solicitação para listar todos os carros.
+2024-12-12 08:49:06,520 - INFO - Solicitação para compactar o arquivo do CSV
+2024-12-12 08:49:06,522 - INFO - Arquivo CSV compactado com sucesso
+2024-12-12 08:49:09,446 - INFO - Solicitação para compactar o arquivo do CSV
+2024-12-12 08:49:09,447 - INFO - Arquivo CSV compactado com sucesso
+2024-12-12 08:58:41,359 - INFO - Arquivo CSV encontrado com sucesso.
+2024-12-12 08:59:28,763 - INFO - Arquivo CSV encontrado com sucesso.
+2024-12-12 09:10:43,562 - INFO - Arquivo CSV encontrado com sucesso.
+2024-12-12 09:13:39,380 - INFO - Arquivo CSV encontrado com sucesso.
+2024-12-12 09:17:45,243 - INFO - Arquivo CSV encontrado com sucesso.
+2024-12-12 09:18:46,094 - INFO - Solicitação para listar todos os carros.

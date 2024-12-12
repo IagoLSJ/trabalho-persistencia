@@ -1,3 +1,5 @@
 __py*
 /server.log
 /db.csv
+db.zip
+server.log

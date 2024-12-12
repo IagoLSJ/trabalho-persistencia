@@ -160,12 +160,12 @@ def quantidade_carros():
 
 @app.get("/compactar", status_code=HTTPStatus.OK)
 def compactar_dados():
-    zip_filename = "db.zip"
+    ZIP_FILENAME = "db.zip"
     logging.info("Solicitação para compactar o arquivo do CSV")
-    with zipfile.ZipFile(zip_filename, 'w', zipfile.ZIP_DEFLATED) as zipf:
+    with zipfile.ZipFile(ZIP_FILENAME, 'w', zipfile.ZIP_DEFLATED) as zipf:
         zipf.write(CSV_FILE_PATH)
     logging.info("Arquivo CSV compactado com sucesso")
-    return FileResponse(zip_filename, media_type='application/zip', filename=zip_filename)
+    return FileResponse(ZIP_FILENAME, media_type='application/zip', filename=ZIP_FILENAME)
 
 
 @app.get("/filtrar", response_model=List[Carro], status_code=HTTPStatus.OK)
@@ -189,7 +189,7 @@ def filtrar_carros(cor: Optional[str] = None,
 
     return dados.to_dict(orient="records")
     
-@app.get("/hash")
+@app.get("/hash",status_code=HTTPStatus.OK)
 def gerar_hash():
     sha256_hash = sha256()
     with open(CSV_FILE_PATH, "rb") as f:
