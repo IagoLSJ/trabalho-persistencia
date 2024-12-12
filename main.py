@@ -2,7 +2,7 @@ import os
 import zipfile
 from hashlib import sha256
 import pandas as pd
-from typing import List
+from typing import List, Optional
 from http import HTTPStatus
 from fastapi import FastAPI, HTTPException
 from pydantic import BaseModel
@@ -19,7 +19,6 @@ logging.basicConfig(
     level=logging.INFO,
     format="%(asctime)s - %(levelname)s - %(message)s"
 )
-
 
 class Carro(BaseModel):
     placa: str
@@ -165,16 +164,19 @@ def compactar_dados():
     logging.info("Solicitação para compactar o arquivo do CSV")
     with zipfile.ZipFile(zip_filename, 'w', zipfile.ZIP_DEFLATED) as zipf:
         zipf.write(CSV_FILE_PATH)
-
     logging.info("Arquivo CSV compactado com sucesso")
     return FileResponse(zip_filename, media_type='application/zip', filename=zip_filename)
 
 
-@app.get("/filtrar", status=HTTPStatus.ok)
-def filtro(placa: str = None,  ano: str = None, marca: str = None, modelo: str = None, cor: str = None):
-    dados = pd.read_csv(CSV_FILE_PATH)
+@app.get("/filtrar", response_model=List[Carro], status_code=HTTPStatus.OK)
+def filtrar_carros(cor: Optional[str] = None,
+                   marca: Optional[str] = None,
+                   ano: Optional[int] = None,
+                   placa: Optional[str] = None,
+                   modelo: Optional[str] = None):
 
-    if placa:
+    dados = pd.read_csv(CSV_FILE_PATH)
+    if placa is not None:
         dados = dados[dados['placa'] == placa]
     if ano is not None:
         dados = dados[dados['ano'] == ano]
@@ -185,9 +187,9 @@ def filtro(placa: str = None,  ano: str = None, marca: str = None, modelo: str =
     if cor is not None:
         dados = dados[dados['cor'] == cor]
 
-    return dados
-
-@app.get("/produtos/hash")
+    return dados.to_dict(orient="records")
+    
+@app.get("/hash")
 def gerar_hash():
     sha256_hash = sha256()
     with open(CSV_FILE_PATH, "rb") as f:
