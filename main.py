@@ -1,4 +1,6 @@
 import os
+import zipfile
+from hashlib import sha256
 import pandas as pd
 from typing import List
 from http import HTTPStatus
@@ -7,6 +9,7 @@ from pydantic import BaseModel
 from contextlib import asynccontextmanager
 import logging
 
+from starlette.responses import FileResponse
 
 LOG_FILE = "server.log"
 CSV_FILE_PATH = "db.csv"
@@ -155,3 +158,39 @@ def quantidade_carros():
 
     logging.info(f"Quantidade de carros: {resposta}")
     return resposta
+
+@app.get("/compactar", status_code=HTTPStatus.OK)
+def compactar_dados():
+    zip_filename = "db.zip"
+    logging.info("Solicitação para compactar o arquivo do CSV")
+    with zipfile.ZipFile(zip_filename, 'w', zipfile.ZIP_DEFLATED) as zipf:
+        zipf.write(CSV_FILE_PATH)
+
+    logging.info("Arquivo CSV compactado com sucesso")
+    return FileResponse(zip_filename, media_type='application/zip', filename=zip_filename)
+
+
+@app.get("/filtrar", status=HTTPStatus.ok)
+def filtro(placa: str = None,  ano: str = None, marca: str = None, modelo: str = None, cor: str = None):
+    dados = pd.read_csv(CSV_FILE_PATH)
+
+    if placa:
+        dados = dados[dados['placa'] == placa]
+    if ano is not None:
+        dados = dados[dados['ano'] == ano]
+    if marca is not None:
+        dados = dados[dados['marca'] == marca]
+    if modelo is not None:
+        dados = dados[dados['modelo'] == modelo]
+    if cor is not None:
+        dados = dados[dados['cor'] == cor]
+
+    return dados
+
+@app.get("/produtos/hash")
+def gerar_hash():
+    sha256_hash = sha256()
+    with open(CSV_FILE_PATH, "rb") as f:
+        for byte_block in iter(lambda: f.read(4096), b""):
+            sha256_hash.update(byte_block)
+    return {"hash_sha256": sha256_hash.hexdigest()}
