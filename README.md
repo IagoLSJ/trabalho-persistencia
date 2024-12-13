@@ -1,6 +1,9 @@
 # Projeto de Cadastro de Carros
-
 Este projeto consiste em uma API desenvolvida em **FastAPI** para gerenciar um cadastro de carros armazenados em um arquivo CSV. É possível adicionar, listar, atualizar, filtrar e remover registros de carros, além de compactar o arquivo de dados em um ZIP e obter o hash do arquivo.
+
+## Autores:
+- Guilherme Moretti - 536179
+- Jose Iago Lima - 500038
 
 ## Como executar o projeto com Pipenv
 
